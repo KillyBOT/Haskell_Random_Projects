@@ -1,7 +1,45 @@
+import Data.List
+import qualified Data.Map as Map
+
 c_G = 6.67430e-11
 c_ME = 5.97237e24
 c_MS = 1.9887e30
 
+data Vector a = 
+    Vec2D {x :: a, y :: a} | 
+    Vec3D {x :: a, y :: a, z :: a} 
+    deriving (Eq, Show, Read)
+
+data Complex = Complex {r :: Double, i :: Double} deriving (Eq, Show, Read, Ord)
+
+data Polynomial = Tail | Expression {power :: Int, coefficient :: Double, next :: Polynomial} deriving (Show, Read, Eq, Ord)
+
+--Vector functions
+
+vecAdd :: (Num t) => Vector t -> Vector t -> Vector t
+(Vec2D a b) `vecAdd` (Vec2D x y) = Vec2D (a+x) (b+y)
+(Vec3D a b c) `vecAdd` (Vec3D x y z) = Vec3D (a+x) (b+y) (c+z)
+
+vecMult :: (Num t) => Vector t -> Vector t -> Vector t
+(Vec2D a b) `vecMult` (Vec2D x y) = Vec2D (a*x) (b*y)
+(Vec3D a b c) `vecMult` (Vec3D x y z) = Vec3D (a*x) (b*y) (c*z)
+
+vecScalar :: (Num t) => Vector t -> t -> Vector t
+(Vec2D a b) `vecScalar` n = Vec2D (a*n) (b*n)
+(Vec3D a b c) `vecScalar` n = Vec3D (a*n) (b*n) (c*n)
+
+--Polynomial functions
+
+polyPrint :: Polynomial -> String
+polyPrint p = case p of 
+    Tail -> ""
+    (Expression {power = pow, coefficient = c, next = n}) -> show c ++ (if pow == 0 then "" else "x^" ++ show pow ++ " + ") ++ polyPrint n
+
+polyAdd :: Polynomial -> Polynomial -> Polynomial
+Tail `polyAdd` pToAdd = Tail
+(Expression {power = pCurrent, coefficient = cCurrent, next = nCurrent}) `polyAdd` pToAdd
+
+-- My first function!
 sumOfThreeCubes :: (Integral a) => a -> a -> a -> a
 sumOfThreeCubes a b c = a * a * a + b * b * b + c * c * c
 
@@ -18,7 +56,7 @@ permutation n r = (factorial n) `div` (factorial (n - r))
 combination :: (Integral a) => a -> a -> a
 combination n r = (permutation n r) `div` (factorial r)
 
-dotProductCartesian :: (Num a) => (a,a,a) -> (a,a,a) -> a
+{-dotProductCartesian :: (Num a) => (a,a,a) -> (a,a,a) -> a
 dotProductCartesian (x1, y1, z1) (x2, y2, z2) = x1 * x2 + y1 * y2 + z1 * z2
 
 crossProductCartesian :: (Num a) => (a,a,a) -> (a,a,a) -> (a,a,a)
@@ -34,7 +72,7 @@ distancePointLine (x,y) (a,b,c) = (abs (a * x + b * y + c)) / (hypot a b)
     where 
         hypot a b = sqrt (a^2 + b^2)
         
-
+-}
 
 fibonacciNumIterative :: (Integral a) => a -> a -> a -> a
 fibonacciNumIterative x y n

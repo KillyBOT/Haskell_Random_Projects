@@ -66,4 +66,4 @@ mTransposeGetHead (x:xs) = head x : mTransposeGetHead xs
 mTransposeGetTail :: [[a]] -> [[a]]
 mTransposeGetTail [] = []
 mTransposeGetTail ([]:xs) = mTransposeGetTail xs
-mTransposeGetTail (x:xs) = (tail x) : (mTransposeGetTail xs)        
+mTransposeGetTail (x:xs) = tail x : mTransposeGetTail xs
