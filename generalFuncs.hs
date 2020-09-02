@@ -1,4 +1,5 @@
 import System.Random
+import qualified MyHeaps.BinaryHeap as BinHeap
 seed = randomIO :: IO Int
 randList = take 30 (randomRs (1,100) (mkStdGen 2123) :: [Integer])
 
